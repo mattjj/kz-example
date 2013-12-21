@@ -7,9 +7,10 @@ from matplotlib import pyplot as plt
 
 import pyhsmm
 from pyhsmm.util.text import progprint_xrange
+from pyhsmm.basic.distributions import NegativeBinomialIntegerRVariantDuration
 
 import autoregressive.models as m
-import autoregressive.distributions as d
+from autoregressive.distributions import MNIW
 
 ###############
 #  make data  #
@@ -31,19 +32,22 @@ data += 0.1*np.random.normal(size=data.shape)
 
 plt.figure()
 plt.plot(data)
+plt.title('data')
 
 ##################
 #  set up model  #
 ##################
 
 Nmax = 20
-model = m.ARHSMM(
+model = m.ARHSMMIntNegBinVariant(
         nlags=1,
         alpha=4.,gamma=4.,init_state_concentration=4.,
-        obs_distns=[d.MNIW(dof=2,S=np.eye(1),M=np.zeros((1,2)),K=np.eye(2),affine=True)
+        obs_distns=[MNIW(dof=2,S=np.eye(1),M=np.zeros((1,2)),K=np.eye(2),affine=True)
             for state in range(Nmax)],
-        dur_distns=[pyhsmm.basic.distributions.PoissonDuration(alpha_0=1*15,beta_0=1)
-            for state in range(Nmax)],
+        dur_distns=[NegativeBinomialIntegerRVariantDuration(
+            r_discrete_distn=np.ones(10), # can learn to be an HMM when r=1
+            alpha_0=9,beta_0=1, # average geometric success probability 1/(9+1)
+            ) for state in range(Nmax)],
         )
 
 model.add_data(data)
