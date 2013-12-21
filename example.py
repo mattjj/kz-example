@@ -3,7 +3,7 @@ from __future__ import division
 import numpy as np
 from numpy import newaxis as na
 from matplotlib import pyplot as plt
-plt.ion()
+# plt.ion()
 
 import pyhsmm
 from pyhsmm.util.text import progprint_xrange
@@ -58,3 +58,4 @@ for itr in progprint_xrange(50):
 plt.figure()
 model.plot()
 
+plt.show()
