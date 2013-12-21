@@ -1,0 +1,6 @@
+[submodule "autoregressive"]
+	path = autoregressive
+	url = https://github.com/mattjj/pyhsmm-autoregressive.git
+[submodule "pyhsmm"]
+	path = pyhsmm
+	url = https://github.com/mattjj/pyhsmm.git
